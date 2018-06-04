@@ -1,0 +1,50 @@
+<p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false" width="1000" height="100%"
+    [responsive]="true">
+    <div class="ui-g">
+        <div class="ui-g-12 course-syllabus">
+            <div class="ui-fluid">
+                <p-selectButton [disabled]="!allowToChangeState" [options]="courseStatus" [(ngModel)]="syl.status" name="status" (onChange)="updateStatus()"></p-selectButton>
+            </div>
+            <p-toolbar>
+                <div class="ui-toolbar-group-left mt5">
+                    <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success"></p-splitButton>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editUnit()"
+                        *ngIf="selectedNode"></button>
+                    <button pButton type="button" pTooltip="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteUnit()"
+                        *ngIf="selectedNode" label="{{'Delete'|translate}}"></button>
+                </div>
+                <div class="ui-toolbar-group-right">
+                    <button pButton type="button" pTooltip="{{'Setting'|translate}}" class="orange-btn" icon="ui-icon-settings" (click)="showSetting()"
+                        label="{{'Setting'|translate}}"></button>
+                    <button pButton type="button" class="orange-btn" (click)="submitForReview()" label="{{'Submit for review'|translate}}" *ngIf="syl.status!='published' && course.author_id == user.id && !allowToChangeState && !openTicket"></button>
+                </div>
+            </p-toolbar>
+            <div class="ui-g-4">
+                <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-syllabus"></p-tree>
+            </div>
+            <div class="ui-g-8" *ngIf="selectedUnit">
+                <div class="card course-syllabus-unit">
+                    <div class="image-box-content">
+                        <div>
+                            <h3 class="removeMT">{{selectedUnit.name}}</h3>
+                            <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]|translate}}</span>
+                        </div>
+                        <div class="image-box-footer">
+                            <button pButton type="button" label="{{'Move up'|translate}}" class="purple-btn" icon="ui-icon-arrow-upward" (click)="moveUp()"></button>
+                            <button pButton type="button" label="{{'Move down'|translate}}" class="purple-btn" icon="ui-icon-arrow-downward" (click)="moveDown()"></button>
+                            <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}" label="{{'Preview'|translate}}"
+                                class="orange-btn" style="margin-right:4px;" (click)="previewUnit()" *ngIf="selectedUnit.type!='folder'"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <syllabus-setting-dialog></syllabus-setting-dialog>
+    <course-unit-dialog></course-unit-dialog>
+    <course-unit-preview-dialog></course-unit-preview-dialog>
+    <p-footer>
+
+        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
+</p-dialog>
