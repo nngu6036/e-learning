@@ -19,11 +19,16 @@ ul {
                             <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null && course.status =='published'"></button>
                             <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 purple-btn" (click)="editSyllabus(course)" *ngIf="course.isAuthor"></button>
                             <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null  && course.status =='published'"></button>
+                            <button pButton type="button" icon="ui-icon-backup" title="{{'Backup'| translate}}" label="{{'Backup'|translate}}" class="green-btn" style="margin-right:4px;" (click)="backupCourse(course)" *ngIf="course.author_id==+currentUser.id"></button>
+                            <button pButton type="button" icon="ui-icon-restore" title="{{'Restore'| translate}}" label="{{'Restore'|translate}}" class="blue-btn" style="margin-right:4px;" (click)="restoreCourse(course)" *ngIf="course.author_id==+currentUser.id"></button>
+
+
                         </div>
                         <div class="ui-g-3">
                             <span class="profile-image-wrapper">
                 <img [src]='course.logo | imageBase64' [ngClass]="{'display-none' : !course.logo}"  />
                 <img *ngIf="!course.logo" src="assets/images/logo/logo-course.jpg">
+
               </span>
                         </div>
                         <div class="ui-g-9">
