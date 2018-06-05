@@ -10,9 +10,9 @@ import { SumPipe } from './exam/sum.pipe';
 import { CourseUnitContainerDirective } from './course/course-unit-template/unit-container.directive';
 import { FolderCourseUnitComponent } from './course/course-unit-template/folder/folder-unit.component';
 import { ExerciseCourseUnitComponent } from './course/course-unit-template/exercise/exercise-unit.component';
-import { SCORMLectureCourseUnitComponent} from './course/course-unit-template/scorm/scorm-lecture-unit.component';
-import { SlideLectureCourseUnitComponent} from './course/course-unit-template/slide/slide-lecture-unit.component';
-import { VideoLectureCourseUnitComponent} from './course/course-unit-template/video/video-lecture-unit.component';
+import { SCORMLectureCourseUnitComponent } from './course/course-unit-template/scorm/scorm-lecture-unit.component';
+import { SlideLectureCourseUnitComponent } from './course/course-unit-template/slide/slide-lecture-unit.component';
+import { VideoLectureCourseUnitComponent } from './course/course-unit-template/video/video-lecture-unit.component';
 import { HtmlLectureCourseUnitComponent } from './course/course-unit-template/lecture/html-lecture-unit.component';
 import { CourseUnitDialog } from './course/course-unit-dialog/course-unit-dialog.component';
 import { CourseUnitPreviewDialog } from './course/course-unit-preview-dialog/course-unit-preview-dialog.component';
@@ -23,6 +23,7 @@ import { SurveyContentDialog } from './survey/content-dialog/survey-content.dial
 import { SurveySheetSaveDialog } from './survey/survey-sheet-save/survey-sheet-save.dialog.component';
 import { ValidateGradePipe } from './exam/exam-setting/grade.pipe';
 import { ExamSettingDialog } from './exam/exam-setting/exam-setting.dialog.component';
+import { CourseBackupDialog } from './course/course-backup/course-backup.dialog.component';
 
 
 @NgModule({
@@ -30,8 +31,9 @@ import { ExamSettingDialog } from './exam/exam-setting/exam-setting.dialog.compo
 	declarations: [CMSComponent, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,ProjectContentDialog,
 		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSettingDialog, 
 		SlideLectureCourseUnitComponent,QuestionSheetEditorDialog, QuestionSheetSaveDialog,SurveySheetSaveDialog,
-		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,
-		 HtmlLectureCourseUnitComponent, CourseUnitDialog, SurveyContentDialog,ValidateGradePipe, ExamSettingDialog],
+		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,CourseBackupDialog,
+		 HtmlLectureCourseUnitComponent, CourseUnitDialog, SurveyContentDialog,ValidateGradePipe, 
+		 ExamSettingDialog, CourseBackupDialog],
 	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective, 
 	ProjectContentDialog, SurveyContentDialog],
 	providers: [],
