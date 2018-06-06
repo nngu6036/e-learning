@@ -17,6 +17,7 @@ import { CourseSyllabusSettingDialog } from '../syllabus-setting/syllabus-settin
 import * as _ from 'underscore';
 import { Ticket } from '../../../shared/models/ticket/ticket.model';
 import { WorkflowService } from '../../../shared/services/workflow.service';
+import { CourseCertificateDialog } from '../../../lms/course/course-certificate/course-certificate.dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -36,6 +37,7 @@ export class CourseBackupDialog extends BaseComponent {
 	private sylUtils: SyllabusUtils;
 	private course: Course;
 	private user: User;
+	private output: String;
 	private courseStatus: SelectItem[];
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
@@ -43,8 +45,6 @@ export class CourseBackupDialog extends BaseComponent {
 	private onHideReceiver: Subject<any> = new Subject();
 	onShow: Observable<any> = this.onShowReceiver.asObservable();
 	onHide: Observable<any> = this.onHideReceiver.asObservable();
-
-	@ViewChild(CourseSyllabusSettingDialog) settingDialog: CourseSyllabusSettingDialog;
 
 	constructor(private socketService: WebSocketService, private workflowService: WorkflowService) {
 		super();
@@ -82,6 +82,7 @@ export class CourseBackupDialog extends BaseComponent {
 			CourseUnit.listBySyllabus(this, this.syl.id).subscribe(units => {
 				this.units = units;
 				this.tree = this.sylUtils.buildGroupTree(units);
+				this.output = '"course-syllabus"', this.sylUtils.buildGroupTree(units);
 				this.closeTransaction();
 			});
 		}
@@ -100,8 +101,8 @@ export class CourseBackupDialog extends BaseComponent {
 
 	backupCourse() {
 		if (this.selectedNode) {
-			console.log(this.selectedNode);
-			
+			console.log('output: ', this.output);
+			console.log('tree: ', this.tree);
 		}
 	}
 }
