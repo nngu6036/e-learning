@@ -18,6 +18,10 @@ import * as _ from 'underscore';
 import { Ticket } from '../../../shared/models/ticket/ticket.model';
 import { WorkflowService } from '../../../shared/services/workflow.service';
 import { CourseCertificateDialog } from '../../../lms/course/course-certificate/course-certificate.dialog.component';
+import { Jsonp } from '@angular/http';
+import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
+import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
 	moduleId: module.id,
@@ -37,6 +41,9 @@ export class CourseBackupDialog extends BaseComponent {
 	private sylUtils: SyllabusUtils;
 	private course: Course;
 	private user: User;
+	private faqs: CourseFaq[];
+	private downloadJsonHref;
+	private materials: CourseMaterial[];
 	private output: String;
 	private courseStatus: SelectItem[];
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
@@ -46,18 +53,9 @@ export class CourseBackupDialog extends BaseComponent {
 	onShow: Observable<any> = this.onShowReceiver.asObservable();
 	onHide: Observable<any> = this.onHideReceiver.asObservable();
 
-	constructor(private socketService: WebSocketService, private workflowService: WorkflowService) {
+	constructor(private socketService: WebSocketService, private workflowService: WorkflowService, private sanitizer: DomSanitizer) {
 		super();
 		this.sylUtils = new SyllabusUtils();
-		this.items = [
-			{ label: this.translateService.instant(COURSE_UNIT_TYPE['folder']), command: () => { this.addUnit('folder') } },
-			{ label: this.translateService.instant(COURSE_UNIT_TYPE['html']), command: () => { this.addUnit('html') } },
-			{ label: this.translateService.instant(COURSE_UNIT_TYPE['slide']), command: () => { this.addUnit('slide') } },
-			{ label: this.translateService.instant(COURSE_UNIT_TYPE['video']), command: () => { this.addUnit('video') } },
-			{ label: this.translateService.instant(COURSE_UNIT_TYPE['exercise']), command: () => { this.addUnit('exercise') } },
-			{ label: this.translateService.instant(COURSE_UNIT_TYPE['scorm']), command: () => { this.addUnit('scorm') } },
-
-		];
 		this.syl = new CourseSyllabus();
 		this.course = new Course();
 		this.courseStatus = _.map(COURSE_STATUS, (val, key) => {
@@ -67,6 +65,8 @@ export class CourseBackupDialog extends BaseComponent {
 			}
 		});
 		this.user = this.authService.UserProfile;
+		this.faqs = [];
+		this.materials = [];
 	}
 
 	show(syl: CourseSyllabus) {
@@ -93,17 +93,30 @@ export class CourseBackupDialog extends BaseComponent {
 		this.onHideReceiver.next();
 	}
 
+	getCourseMaterial() {
+		CourseMaterial.listByCourse(this, this.syl.id)
+			.subscribe(materials => {
+				this.materials = materials;
+			});
+	}
 
-	nodeSelect(event: any) {
-		if (this.selectedNode) {
-		}
+	getCourseFaq() {
+		CourseFaq.listByCourse(this, this.syl.id)
+			.subscribe(faqs => {
+				this.faqs = faqs;
+			});
 	}
 
 	backupCourse() {
-		if (this.selectedNode) {
-			console.log('output: ', this.output);
-			console.log('tree: ', this.tree);
-		}
+		this.getCourseFaq();
+		this.getCourseMaterial();
+		this.output = { "course-faq": this.faqs, "course-material": this.materials, "course-syllabus": this.syl, "course-unit": this.units };
+		let dataStr = JSON.stringify(this.output);
+		let data = "text/json;charset=utf-8," + encodeURIComponent(dataStr);
+
+		console.log('click');
+		let uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(dataStr));
+		this.downloadJsonHref = uri;
 	}
 }
 
