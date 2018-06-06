@@ -8,16 +8,12 @@
                 </div>
             </p-toolbar>
             <div class="ui-g-6">
-                <p-tree [value]="tree" selectionMode="multiple" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"
-                    styleClass="tree-unit-course-syllabus"></p-tree>
+                <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
             </div>
         </div>
     </div>
-    <syllabus-setting-dialog></syllabus-setting-dialog>
     <course-unit-dialog></course-unit-dialog>
-    <course-unit-preview-dialog></course-unit-preview-dialog>
     <p-footer>
-
         <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
     </p-footer>
 </p-dialog>

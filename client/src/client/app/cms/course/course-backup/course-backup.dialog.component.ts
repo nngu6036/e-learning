@@ -38,8 +38,6 @@ export class CourseBackupDialog extends BaseComponent {
 	private user: User;
 	private courseStatus: SelectItem[];
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
-	private allowToChangeState: boolean;
-	private openTicket: Ticket;
 
 	private onShowReceiver: Subject<any> = new Subject();
 	private onHideReceiver: Subject<any> = new Subject();
@@ -78,12 +76,6 @@ export class CourseBackupDialog extends BaseComponent {
 		this.buildCourseTree();
 	}
 
-
-	clearSelection() {
-		this.selectedNode = null;
-		this.selectedUnit = null;
-	}
-
 	buildCourseTree() {
 		if (this.syl) {
 			this.startTransaction();
@@ -96,7 +88,6 @@ export class CourseBackupDialog extends BaseComponent {
 	}
 
 	hide() {
-		this.clearSelection();
 		this.display = false;
 		this.onHideReceiver.next();
 	}
@@ -104,16 +95,14 @@ export class CourseBackupDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			if (this.selectedUnit && this.selectedUnit.id == this.selectedNode.data.id) {
-				this.clearSelection();
-			}
-			else
-				this.selectedUnit = this.selectedNode.data;
 		}
 	}
 
 	backupCourse() {
-		console.log('12345');
+		if (this.selectedNode) {
+			console.log(this.selectedNode);
+			
+		}
 	}
 }
 
