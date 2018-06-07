@@ -17,6 +17,7 @@ import { SelectItem } from 'primeng/api';
 import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { CourseBackupDialog } from '../../../cms/course/course-backup/course-backup.dialog.component';
+import { CourseRestoreDialog } from '../../../cms/course/course-restore/course-restore.dialog.component';
 
 
 @Component({
@@ -38,6 +39,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
     @ViewChild(CourseBackupDialog) backupDialog: CourseBackupDialog;
+    @ViewChild(CourseRestoreDialog) restoreDialog: CourseRestoreDialog;
 
     constructor(private router: Router) {
         super();
@@ -162,5 +164,10 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     restoreCourse(course: Course) {
         console.log('course:', course);
+        this.startTransaction();
+        this.getCourseSyllabus(course).subscribe(syllabus => {
+            this.restoreDialog.show(syllabus);
+            this.closeTransaction();
+        });
     }
 }

@@ -10,6 +10,7 @@ ul {
 </style>
 <div class="card card-w-title">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <h1>{{'My courses'|translate}}</h1>
     <p-dataList [value]="courses" [paginator]="true" [rows]="5" styleClass="lms-course-list">
         <ng-template let-course pTemplate="item">
@@ -29,7 +30,6 @@ ul {
                             <span class="profile-image-wrapper">
                 <img [src]='course.logo | imageBase64' [ngClass]="{'display-none' : !course.logo}"  />
                 <img *ngIf="!course.logo" src="assets/images/logo/logo-course.jpg">
-
 
               </span>
                         </div>
@@ -118,4 +118,5 @@ ul {
   </p-dataList>
   <course-syllabus-dialog></course-syllabus-dialog>
   <course-backup-dialog></course-backup-dialog>
+  <course-restore-dialog></course-restore-dialog>
 </div>
