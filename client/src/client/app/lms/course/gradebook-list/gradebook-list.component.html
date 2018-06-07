@@ -3,14 +3,16 @@
         <div class="ui-g-12 ">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-visibility " (click)="viewGradebook() " *ngIf="!selectedRecord"></button>
+                    <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-visibility " (click)="viewGradebook() "
+                        *ngIf="selectedRecord"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <p-selectButton [options]="viewModes" [(ngModel)]="viewMode"></p-selectButton>
                 </div>
             </p-toolbar>
             <div [hidden]="viewMode=='detail'">
-                <p-table #outlineTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+                <p-table #outlineTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord"
+                    [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'name'">
@@ -51,11 +53,11 @@
                             <td>{{record.name}}</td>
                             <td>{{record.email}}</td>
                             <td>{{record.group_id__DESC__}}</td>
+                            <td>{{COURSE_MEMBER_ENROLL_STATUS[record.enroll_status] | translate}}</td>
                             <td>{{record.first_attempt}} </td>
                             <td>{{record.last_attempt}} </td>
-                            <td>{{record.time_spent}} {{'minute'|translate}}</td>
+                            <td>{{record.time_spent}} {{'minutes'|translate}}</td>
                             <td>{{record.completion}} %</td>
-                            <td>{{COURSE_MEMBER_ENROLL_STATUS[record.enroll_status]}}</td>
                             <td>{{record.certificate !=null}} </td>
                         </tr>
                     </ng-template>
@@ -73,7 +75,8 @@
             </div>
 
             <div [hidden]="viewMode=='outline'">
-                <p-table #detailTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+                <p-table #detailTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord"
+                    [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'name'">

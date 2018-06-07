@@ -62,6 +62,8 @@ export class GradebookListDialog extends BaseComponent {
 			this.records = _.filter(members, (member)=> {
 				return member.role =='student';
 			});
+			
+			console.log('record:', this.records);
 			CourseSyllabus.byCourse(this, this.courseClass.course_id).subscribe(syllabus=> {
 				CourseUnit.listBySyllabus(this, syllabus.id).subscribe(courseUnits=> {
 					this.courseUnits = _.filter(courseUnits, unit=> {
