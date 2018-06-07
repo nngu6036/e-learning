@@ -1,11 +1,9 @@
-<p-dialog header="{{'Project submission dialog'|translate}}" [(visible)]="display" modal="true" width="960" height="100%" [responsive]="true" appendTo="body">
-  <div style="display: none; visibility: hidden;">
+<p-dialog header="{{'Project submission dialog'|translate}}" [(visible)]="display" modal="true" width="320" height="100%" [responsive]="true" appendTo="body">
   	<div class="ui-g-6">
           <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}" (onSelect)="changeFile($event)" accept="*" maxFileSize="1024*8" showUploadButton="false">
           </p-fileUpload>
           <a href="{{submit.file_url}}" target="_blank" *ngIf="submit.file_url">{{submit.filename}}</a>
         </div>
-  </div>
   <p-footer>
     <button type="button" pButton icon="ui-icon-check" (click)="confirm()" label="{{'Confirm'|translate}}"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Cancel'|translate}}"></button>

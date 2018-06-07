@@ -70,6 +70,11 @@
                         <span class="cmt-detail">{{project.end | date : "dd/MM/yyyy"}}</span>
                       </li>
                       <li class="clearfix">
+                        <i class="material-icons">report</i>
+                        <span class="cmt-title">{{'Submit status'|translate}}</span>
+                        <span class="cmt-detail">{{project["submit"]?'Yes':'No'}}</span>
+                      </li>
+                      <li class="clearfix">
                         <i class="material-icons">star</i>
                         <span class="cmt-title">{{'Score'|translate}}</span>
                         <span class="cmt-detail">{{project.score}}</span>

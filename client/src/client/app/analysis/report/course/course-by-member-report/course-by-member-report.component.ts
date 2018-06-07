@@ -15,6 +15,7 @@ import { SelectGroupDialog } from '../../../../shared/components/select-group-di
 import { SelectUsersDialog } from '../../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
+import { TranslateService } from '@ngx-translate/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -23,18 +24,26 @@ import { DomSanitizer } from '@angular/platform-browser';
 	templateUrl: 'course-by-member-report.component.html',
 	styleUrls: ['course-by-member-report.component.css'],
 })
-export class CourseByMemberReportComponent extends BaseComponent {
 
+export class CourseByMemberReportComponent extends BaseComponent implements OnInit {
+
+	@ViewChild(SelectGroupDialog) groupDialog: SelectGroupDialog;
+	@ViewChild(SelectUsersDialog) userDialog: SelectUsersDialog;
+
+	private reportUtils: ReportUtils;
 	private records: any;
 	private rowGroupMetadata: any;
-	GROUP_CATEGORY = GROUP_CATEGORY;
-    private reportUtils: ReportUtils;
-    COURSE_MODE = COURSE_MODE;
-    COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
+	private GROUP_CATEGORY = GROUP_CATEGORY;
+	private COURSE_MODE = COURSE_MODE;
+	private COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
 	constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
 		this.reportUtils = new ReportUtils();
+	}
+
+	ngOnInit() {
+		this.updateRowGroupMetaData();
 	}
 
 	clear() {
@@ -67,19 +76,40 @@ export class CourseByMemberReportComponent extends BaseComponent {
 	}
 
 	export() {
-		var header = [
-			this.translateService.instant('Login'),
-			this.translateService.instant('Name'),
-			this.translateService.instant('Course code'),
-			this.translateService.instant('Course name'),
-			this.translateService.instant('Course mode'),
-			this.translateService.instant('Register date'),
-			this.translateService.instant('First attempt'),
-			this.translateService.instant('Last attempt'),
-			this.translateService.instant('Enroll status'),
-			this.translateService.instant('Time spent')
-		]
-		this.excelService.exportAsExcelFile(header.concat(this.records), 'course_by_member_report');
+		var output = [];
+		this.records.forEach(record => {
+			var course = { 'User login': record['user_login'], 'User name': record['user_name'], 'Course name': record['course_name'], 'Course mode': record['course_mode'], 'Course code': record['course_code'], 'Enroll status': record['enroll_status'], 'Date register': record['date_register'], 'First attempt': record['first_attempt'], 'Last attempt': record['last_attempt'], 'Time spent': '' };
+			output.push(course);
+		});
+
+		this.excelService.exportAsExcelFile(output, 'course_by_member_report');
+	}
+
+	selectUserGroup() {
+		this.groupDialog.show();
+		this.groupDialog.onSelectGroup.subscribe((group: Group) => {
+			this.startTransaction();
+			User.listByGroup(this, group.id).subscribe(users => {
+				this.generateReport(users).subscribe(records => {
+					records = records.filter(record => record.course_name != false);
+					this.records = records;
+					this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records, "user_login");
+					this.closeTransaction();
+				});
+			});
+		});
+	}
+
+	selectIndividualUsers() {
+		this.userDialog.show();
+		this.userDialog.onSelectUsers.subscribe((users: User[]) => {
+			this.generateReport(users).subscribe(records => {
+				records = records.filter(record => record.course_name != false);
+				this.records = records;
+				this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records, "user_login");
+				console.log(this.rowGroupMetadata);
+			});
+		});
 	}
 
 	render(users: User[]) {

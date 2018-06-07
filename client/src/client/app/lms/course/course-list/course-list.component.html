@@ -22,7 +22,8 @@
             </div>
             <div class="ui-g-3">
               <span class="profile-image-wrapper">
-                <img [src]='course.logo | imageBase64' />
+                <img [src]='course.logo | imageBase64' [ngClass]="{'display-none' : !course.logo}"  />
+                <img *ngIf="!course.logo" src="assets/images/logo/logo-course.jpg">
               </span>
             </div>
             <div class="ui-g-9">

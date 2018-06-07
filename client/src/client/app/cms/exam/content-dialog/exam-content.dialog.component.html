@@ -1,56 +1,50 @@
-<p-dialog header="{{'Exam content'|translate}}: {{exam.name}}" [(visible)]="display" modal="false" width="1000" height="100%" [responsive]="true">
-  <div class="ui-g">
-    <div class="ui-g-12">
-      <p-toolbar>
-        <div class="ui-toolbar-group-left mt5">
-          <button pButton type="button" label="{{'Design question sheet'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="designSheet()" *ngIf="!sheet.finalized"></button>
-          <button pButton type="button" label="{{'Load question sheet templates'|translate}}" class="purple-btn" icon="ui-icon-details" (click)="loadSheetTemplate()" *ngIf="!sheet.finalized"></button>
-          <button pButton type="button" label="{{'Save to templates'|translate}}" class="purple-btn" icon="ui-icon-save" (click)="saveToTemplate()" *ngIf="sheet.finalized"></button>
-          <button pButton type="button"  class="orange-btn" icon="ui-icon-delete" (click)="clearSheet()" *ngIf="sheet && sheet.finalized" label="{{'Clear'|translate}}"></button>
-        </div>
+<p-dialog header="{{'Exam content'|translate}}" [(visible)]="display" modal="false" width="960" height="600" [responsive]="true">
+  <p-scrollPanel [style]="{width: '100%', height: '480px'}">
+    <p-tabView>
+      <p-tabPanel header="{{'Question selection' |translate}}">
         <div class="ui-toolbar-group-right">
-          <button pButton type="button" class="purple-btn" icon="ui-icon-settings" (click)="previewSheet()" label="{{'Preview'|translate}}"  *ngIf="sheet && sheet.finalized"></button>
+          <button pButton type="button" class="purple-btn" icon="ui-icon-settings" (click)="previewSheet()" label="{{'Preview'|translate}}"
+            *ngIf="sheet && sheet.finalized"></button>
         </div>
-      </p-toolbar>
+      </p-tabPanel>
       <p-table #examQuestionTable [value]="examQuestions" [responsive]="true" styleClass="table-content">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>#</th>
-              <th>
-                {{'Title'|translate}}
-              </th>
-              <th>
-                {{'Group'|translate}}
-              </th>
-              <th>
-                {{'Score'|translate}}
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-question let-rowIndex="rowIndex">
-            <tr>
-              <td>{{rowIndex+1}}</td>
-              <td>{{question.title}}</td>
-              <td>{{question.group_id__DESC__}}</td>
-              <td>{{question.score}}</td>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="footer">
-            <tr>
-              <td colspan="3">{{'Total score'|translate}}</td>
-              <td>{{totalScore}}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-    </div>
-  </div>
-  <question-sheet-preview-dialog></question-sheet-preview-dialog>
-  <select-question-sheet-dialog></select-question-sheet-dialog>
-  <question-sheet-editor-dialog></question-sheet-editor-dialog>
-  <question-sheet-save-dialog></question-sheet-save-dialog>
-  <p-footer>
-    <button type="submit" pButton icon="fa-check" (click)="save()"  label="{{'Save'|translate}}"></button>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>#</th>
+            <th>
+              {{'Title'|translate}}
+            </th>
+            <th>
+              {{'Group'|translate}}
+            </th>
+            <th>
+              {{'Score'|translate}}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-question let-rowIndex="rowIndex">
+          <tr>
+            <td>{{rowIndex+1}}</td>
+            <td>{{question.title}}</td>
+            <td>{{question.group_id__DESC__}}</td>
+            <td>{{question.score}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <tr>
+            <td colspan="3">{{'Total score'|translate}}</td>
+            <td>{{totalScore}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <question-sheet-preview-dialog></question-sheet-preview-dialog>
+      <select-question-sheet-dialog></select-question-sheet-dialog>
+      <question-sheet-editor-dialog></question-sheet-editor-dialog>
+      <question-sheet-save-dialog></question-sheet-save-dialog>
+      <p-footer>
+        <button type="submit" pButton icon="fa-check" (click)="save()" label="{{'Save'|translate}}"></button>
+        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+      </p-footer>
+    </p-tabView>
+  </p-scrollPanel>
 </p-dialog>
-

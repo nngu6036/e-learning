@@ -447,9 +447,6 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 			this.warn(this.translateService.instant('Project has ended'));
 			return;
 		}
-		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
-			this.projectSubmitDialog.show(project, this.member);
-		}
-		);
+		this.projectSubmitDialog.show(project, this.member);
 	}
 }

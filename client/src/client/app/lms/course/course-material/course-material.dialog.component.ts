@@ -35,7 +35,7 @@ export class CourseMaterialDialog extends BaseDialog<CourseMaterial> {
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						this.object.url = data["url"];
-						this.object.filename = file.filename;
+						this.object.filename = file.name;
 					});
 				}
 			},

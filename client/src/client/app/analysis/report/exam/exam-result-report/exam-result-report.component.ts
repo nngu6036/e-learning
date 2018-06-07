@@ -25,9 +25,11 @@ import { ExcelService } from '../../../../shared/services/excel.service';
     selector: 'exam-result-report',
     templateUrl: 'exam-result-report.component.html',
 })
-export class ExamResultReportComponent extends BaseComponent {
+export class ExamResultReportComponent extends BaseComponent implements OnInit {
 
     private records: any;
+    private exams: Exam[];
+    private selectedExam: any;
     private reportUtils: ReportUtils;
 
     constructor(private excelService: ExcelService, private datePipe: DatePipe) {
@@ -35,21 +37,38 @@ export class ExamResultReportComponent extends BaseComponent {
         this.reportUtils = new ReportUtils();
     }
 
-
-    export() {
-        var header = [
-            this.translateService.instant('Name'),
-            this.translateService.instant('Login'),
-            this.translateService.instant('User group'),
-            this.translateService.instant('Attempt date'),
-            this.translateService.instant('Score'),
-            this.translateService.instant('Result'),
-        ]
-        this.excelService.exportAsExcelFile(header.concat(this.records), 'course_by_member_report');
+    ngOnInit() {
+        Exam.all(this).subscribe(exams => {
+            this.exams = exams;
+        });
     }
 
     clear() {
         this.records = [];
+    }
+
+    export() {
+        var output = [];
+        this.records.forEach(record => {
+            var course = { 'Name': record['user_name'], 'Login': record['user_login'], 'User group': record['user_group'], 'Attempt date': record['date_attempt'], 'Score': record['score'], 'Result': record['result'] };
+            output.push(course);
+        });
+        this.excelService.exportAsExcelFile(output, 'course_by_member_report');
+    }
+
+    selectExam() {
+        if (this.selectedExam) {
+            this.startTransaction();
+            ExamMember.listByExam(this, this.selectedExam.id).subscribe(members => {
+                ExamGrade.listByExam(this, this.selectedExam.id).subscribe(grades => {
+                    Submission.listByExam(this, this.selectedExam.id).subscribe(submits => {
+                        ExamLog.listByExam(this, this.selectedExam.id).subscribe(logs => {
+                            this.records = this.generateReport(this.selectedExam, grades, submits, logs, members);
+                        });
+                    });
+                });
+            });
+        }
     }
 
     render(exam: Exam) {

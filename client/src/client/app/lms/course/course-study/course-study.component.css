@@ -6,3 +6,48 @@
 .course-study-unit{
 	height: 528px;
 }
+
+.list-cmt{
+	padding-left: 0;
+}
+
+.list-cmt li{
+	list-style: none;
+	padding: 10px 14px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.list-cmt li i{
+	font-size: 24px;
+    margin-right: 8px;
+    width: 32px;
+    vertical-align: middle;
+    color: #757575;
+}
+
+.list-cmt li .cmt-title{
+	font-weight: 700;
+    margin-right: 8px;
+}
+
+.list-cmt li .cmt-detail{
+	color: #283593;
+	float: right;
+}
+
+.e-status{
+	background-color: #e91e63;
+	border-radius: 9px;
+    padding: 2px 8px;
+    color: #fff;
+}
+
+h4.title{
+	float: left;
+	font-weight: 600;
+	color: #192fa9;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 5px 10px 0 15px;
+}

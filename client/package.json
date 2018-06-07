@@ -38,6 +38,8 @@
     "sme.prod.aot": "gulp sme.prod.aot --color --env-config prod --build-type prod --preserve-source-maps",
     "sme.prod.rollup.aot": "gulp sme.prod.rollup.aot --color --env-config prod --build-type prod --preserve-source-maps",
     "start": "gulp serve.dev --color",
+    "start.prod": "gulp serve.dev --color --env-config prod",
+    "start.test": "gulp serve.dev --color --env-config test",
     "start.demo": "gulp serve.dev --color --demo",
     "start.deving": "gulp start.deving --color",
     "tasks.list": "gulp --tasks-simple --color",

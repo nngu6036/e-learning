@@ -7,7 +7,7 @@ export = (done: any) => {
   let bannerPath = join(Config.TOOLS_DIR, 'config', 'banner.txt');
   const colors = require('supports-color');
   if (colors.has256 || colors.stdout.has256) {
-    bannerPath = join(Config.TOOLS_DIR, 'config', 'banner-256.txt');
+    //bannerPath = join(Config.TOOLS_DIR, 'config', 'banner-256.txt');
   }
   readFile(bannerPath, (e, content) => {
     if (!e) {

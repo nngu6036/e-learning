@@ -38,19 +38,12 @@ export class MemberByCourseReportComponent extends BaseComponent{
     }
 
     export() {
-    	var header = [
-    		this.translateService.instant('Course code'),
-    		this.translateService.instant('Course name'),
-    		this.translateService.instant('Total'),
-    		this.translateService.instant('Total registered'),
-    		this.translateService.instant('Percentage registered'),
-    		this.translateService.instant('Total in-progress'),
-    		this.translateService.instant('Percentage in-progress'),
-    		this.translateService.instant('Total completed'),
-    		this.translateService.instant('Percentage completed'),
-    		this.translateService.instant('Time'),
-    	]
-    	this.excelService.exportAsExcelFile(header.concat(this.records),'member_by_course_report');
+		var output = [];
+		this.records.forEach(record => {
+			var course = { 'Course code': record['course_code'], 'Course name': record['course_name'], 'Total': record['total_member'], 'Total registered': record['total_member_registered'], 'Percentage registered': record['percentage_member_registered'], 'Total in-progress': record['total_member_inprogress'], 'Percentage in-progress': record['percentage_member_inprogress'], 'Total completed': record['total_member_completed'], 'Percentage completed': record['percentage_member_inprogress'], 'Time': record['time_spent'] };
+			output.push(course);
+		});
+    	this.excelService.exportAsExcelFile(output,'course_by_member_report');
     }
 
     clear() {

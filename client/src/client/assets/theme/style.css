@@ -48,6 +48,10 @@ body .language .ui-dropdown .ui-dropdown-trigger{
   line-height: 30px;
 }
 
+.language .ui-dropdown .ui-dropdown-label{
+  padding-right: 1.5em !important;
+}
+
 .ui-treetable td.group-code{
   text-align: center;
 }
@@ -319,6 +323,18 @@ body .user-dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
  /* background-color: #616161;*/
   background-color: #71a23c; }
 
+body .user-dashboard .ui-fieldset .ui-fieldset-legend .ui-fieldset-toggler{
+  display: none;
+}
+
+body .user-dashboard .ui-fieldset .ui-fieldset-legend{
+  padding: 0;
+}
+
+body .user-dashboard  .ui-fieldset.ui-widget-content{
+  border: none;
+}
+
 .question p{
   margin: 0;
 }
@@ -347,7 +363,7 @@ body .user-dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
 
 .tree-unit-course-syllabus{
   width: 100%;
-  height: 270px;
+  height: 400px;
   overflow: auto;
 }
 
@@ -395,7 +411,7 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
 
 .lms-course-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all:hover,
 .lms-exam-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all:hover{
-  box-shadow: 0 0 11px rgba(33,33,33,.2);
+  box-shadow: 0 0 11px #03a9f4;
 }
 
 .lms-course-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all,
@@ -444,10 +460,6 @@ body .lms-conference-list-item .ui-panel .ui-panel-footer{
   border-top: none;
 }
 
-.schedule-dashboard .fc-scroller{
-  height: 500px !important;
-}
-
 .spinner {
    position: absolute;
    left: 50%;
@@ -492,6 +504,10 @@ body .settings-exam .ui-fluid .ui-spinner .ui-spinner-button{
 }
 
 .setting-exam{
-  height: 400px;
+  height: 430px;
   overflow: auto;
+}
+
+body .course-syllabus-dialog .ui-dialog-content.ui-widget-content{
+  height: 100% !important;
 }

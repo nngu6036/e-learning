@@ -70,6 +70,17 @@ export class ProjectListDialog extends BaseComponent {
 		}
 	}
 
+	deleteProject() {
+		if (this.selectedProject) {
+			this.confirm('Are you sure to delete ?', () => {
+				this.selectedProject.delete(this).subscribe(()=> {
+					this.success('Project deleted');
+					this.loadProjects();
+				});
+			});
+		}
+	}
+
 	markProject() {
 		if (this.selectedProject)  
 			this.projectManageDialog.show(this.selectedProject);

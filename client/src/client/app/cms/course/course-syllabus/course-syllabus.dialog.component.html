@@ -1,4 +1,4 @@
-<p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false" width="1000" height="100%" [responsive]="true">
+<p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-syllabus-dialog" [responsive]="true">
   <div class="ui-g">
     <div class="ui-g-12 course-syllabus">
       <div class="ui-fluid">
@@ -15,10 +15,10 @@
           <button pButton type="button" class="orange-btn"  (click)="submitForReview()" label="{{'Submit for review'|translate}}" *ngIf="syl.status!='published' && course.author_id == user.id && !allowToChangeState && !openTicket"></button>
         </div>
       </p-toolbar>
-      <div class="ui-g-4">
+      <div class="ui-g-4" style="padding: 10px 10px 0 0">
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-syllabus"></p-tree>
       </div>
-      <div class="ui-g-8" *ngIf="selectedUnit">
+      <div class="ui-g-8" style="padding: 10px 0 0" *ngIf="selectedUnit">
         <div class="card course-syllabus-unit">
           <div class="image-box-content">
             <div>

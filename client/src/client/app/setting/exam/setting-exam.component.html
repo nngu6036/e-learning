@@ -1,35 +1,42 @@
-<div class="ui-g-12 ui-md-6 ui-lg-4 task-list settings-exam">
+<div class="ui-g-8 task-list settings-exam">
   <p-panel header="{{'Exams' | translate}}" styleClass="setting-exam">
     <button pButton type="button" icon="ui-icon-menu" class="secondary-btn" (click)="saveExamSetting()"></button>
     <div class="ui-g-12 ui-fluid form-group">
       <div class="ui-g-6">
-        <span class="md-inputfield">
-              <input type="text"  pInputText name="scale" [(ngModel)]="setting.scale" pKeyFilter="pint">
-              <label for="scale">{{'Scale' | translate}}</label>
-            </span>
+        <span class="md-inputfield input-scale">
+          <input type="text"  pInputText name="scale" [(ngModel)]="setting.scale" pKeyFilter="pint">
+          <label for="scale">{{'Scale' | translate}}</label>
+        </span>
       </div>
       <div class="ui-g-6">
         <p-checkbox name="take_pic" binary="true" label="{{'Take picture on submit'|translate}}" [(ngModel)]="setting.take_picture_on_submit"></p-checkbox>
       </div>
       <div class="ui-g-12">
-        <button pButton type="button" icon="ui-icon-add" class="secondary-btn add-grade" (click)="addGrade()" pTooltip="{{'Add grade'|translate}}"></button>
+        <!-- <button pButton type="button" icon="ui-icon-add" class="secondary-btn add-grade" (click)="addGrade()" pTooltip="{{'Add grade'|translate}}"></button> -->
+        <button pButton type="button" label="{{'Add grade'|translate}}" class="green-btn add-grade" (click)="addGrade()" icon="ui-icon-add"></button>
         <ul class="">
           <li *ngFor="let grade of grades">
-            <div class="grade-info">
+            <div class="ui-g-12">
+            <div class="ui-g-4">
               <span class="md-inputfield mg">
+                <input type="text" pInputText [(ngModel)]="grade.name" name="grade_name">
                 <label for="grade_name">{{'Name' | translate}}</label>
-                <input type="text" pInputText [(ngModel)]="grade.name" name="grade_name">              
-              </span>
-              <span class="md-inputfield mg">
-                <label for="grade_min">{{'Min' | translate}}</label>
-                <p-spinner [(ngModel)]="grade.min_score" name="grade_min"></p-spinner>             
-                </span>
-              <span class="md-inputfield mg">
-                <label for="grade_max">{{'Max' | translate}}</label>
-                <p-spinner [(ngModel)]="grade.max_score" name="grade_max"></p-spinner>
               </span>
             </div>
-            <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeGrade(grade)" class="remove-btn removeMR"></button>
+            <div class="ui-g-4">
+              <span class="md-inputfield mg">
+                <p-spinner [(ngModel)]="grade.min_score" name="grade_min"></p-spinner>
+                <label for="grade_min">{{'Min' | translate}}</label>
+              </span>
+            </div>
+            <div class="ui-g-4">
+              <span class="md-inputfield mg">
+                <p-spinner [(ngModel)]="grade.max_score" name="grade_max"></p-spinner>
+                <label for="grade_max">{{'Max' | translate}}</label>
+              </span>
+            </div>
+            </div>
+            <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeGrade(grade)" class="remove-btn"></button>
           </li>
         </ul>
         <div *ngIf="grades | validateGrade:setting.scale" class="ui-message ui-messages-error ui-corner-all">

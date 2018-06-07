@@ -1,10 +1,12 @@
 .add-grade{
 	float: none;
-	margin: 0;
+	margin: 10px 0 0 0;
+	width: auto;
 }
 
 ul{
 	padding-left: 0;
+	padding-right: 40px;
 }
 
 ul li{
@@ -17,7 +19,12 @@ ul li{
 }
 
 .remove-btn{
-	margin-top: -60px;
     width: 2em !important;
     height: 2em !important;
+    margin-right: -32px;
+    margin-top: 8px;
+}
+
+.input-scale{
+	width: 330px;
 }
