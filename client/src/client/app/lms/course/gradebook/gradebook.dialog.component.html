@@ -3,13 +3,17 @@
     <div class="ui-g-12 ">
       <p-toolbar>
         <div class="ui-toolbar-group-left">
-          <button pButton type="button " label="{{ 'Issue certificate'|translate}} " class="purple-btn " icon="ui-icon-beenhere " (click)="issueCertificate()" *ngIf="!certificate"></button>
-          <button pButton type="button " label="{{ 'View certificate'|translate}} " class="purple-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
+          <button pButton type="button " label="{{ 'Issue certificate'|translate}} " class="purple-btn " icon="ui-icon-beenhere " (click)="issueCertificate()"
+            *ngIf="!certificate"></button>
+          <button pButton type="button " label="{{ 'View certificate'|translate}} " class="purple-btn " icon="ui-icon-print " (click)="showCertificate()"
+            *ngIf="certificate"></button>
+        </div>
+        <div class="ui-toolbar-group-right">
+          <button pButton type="button " label="{{ 'Download score'|translate}} " class="purple-btn " icon="ui-icon-insert-chart "
+            (click)="downloadScoreReport()"></button>
         </div>
       </p-toolbar>
-      <div class="ui-toolbar-group-right">
-          <button pButton type="button " label="{{ 'Download score'|translate}} " class="purple-btn " icon="ui-icon-insert-chart " (click)="downloadScoreReport()" ></button>
-        </div>
+
       <p-table #stasTable [value]="stats" [paginator]="false" [rows]="1" [responsive]="true">
         <ng-template pTemplate="header">
           <tr>
@@ -51,8 +55,8 @@
               <div class="ui-g-8">
                 <h4>{{exam.name}}</h4>
                 <span class="e-status">
-              {{EXAM_STATUS[exam.status] | translate}}
-            </span>
+                  {{EXAM_STATUS[exam.status] | translate}}
+                </span>
                 <h5 class="e-title">{{'Summary'|translate}}</h5>
                 <p>
                   {{exam.summary}}
@@ -90,7 +94,8 @@
                     </li>
                   </ul>
                   <p-footer>
-                    <button pButton type="button" icon="ui-icon-timeline" title="{{'Answer'| translate}}" label="{{'Answer'|translate}}" class="orange-btn" style="margin-right:4px;"  (click)="viewAnswer(exam)"></button>
+                    <button pButton type="button" icon="ui-icon-timeline" title="{{'Answer'| translate}}" label="{{'Answer'|translate}}" class="orange-btn"
+                      style="margin-right:4px;" (click)="viewAnswer(exam)"></button>
                   </p-footer>
                 </p-card>
               </div>
@@ -103,15 +108,15 @@
         <ng-template let-project pTemplate="item">
           <p-card>
             <p-header>
-              <div class="head-exam">
+              <div class="head-project">
               </div>
             </p-header>
-            <div class="ui-g body-exam">
+            <div class="ui-g body-project">
               <div class="ui-g-8">
                 <h4>{{project.name}}</h4>
                 <span class="e-status">
-              {{PROJECT_STATUS[project.status] | translate}}
-            </span>
+                  {{project.status}}
+                </span>
                 <h5 class="e-title">{{'Summary'|translate}}</h5>
                 <p>
                   {{project.summary}}
@@ -154,9 +159,9 @@
 
     </div>
   </p-scrollPanel>
-    <answer-print-dialog></answer-print-dialog>
-    <course-certificate-dialog></course-certificate-dialog>
-    <certificate-print-dialog></certificate-print-dialog>
+  <answer-print-dialog></answer-print-dialog>
+  <course-certificate-dialog></course-certificate-dialog>
+  <certificate-print-dialog></certificate-print-dialog>
   <p-footer>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
