@@ -10,18 +10,14 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { TreeNode, MenuItem, SelectItem, Message } from 'primeng/api';
-import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON, COURSE_STATUS } from '../../../shared/models/constants';
-import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.component';
-import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-unit-preview-dialog.component';
-import { CourseSyllabusSettingDialog } from '../syllabus-setting/syllabus-setting.dialog.component';
+import { COURSE_UNIT_TYPE, COURSE_STATUS } from '../../../shared/models/constants';
 import * as _ from 'underscore';
-import { Ticket } from '../../../shared/models/ticket/ticket.model';
 import { WorkflowService } from '../../../shared/services/workflow.service';
-import { CourseCertificateDialog } from '../../../lms/course/course-certificate/course-certificate.dialog.component';
-import { Jsonp } from '@angular/http';
+import { Jsonp, RequestOptions, Http } from '@angular/http';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ExcelService } from '../../../shared/services/excel.service';
 
 @Component({
 	moduleId: module.id,
@@ -39,6 +35,8 @@ export class CourseRestoreDialog extends BaseComponent {
 	private units: CourseUnit[];
 	private electedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
+	private fileName: string;
+	private records: any[];
 	private course: Course;
 	private user: User;
 	private faqs: CourseFaq[];
@@ -47,7 +45,9 @@ export class CourseRestoreDialog extends BaseComponent {
 	private output: String;
 	private courseStatus: SelectItem[];
 	private msgs: Message[];
-    private uploadedFiles: any[] = [];
+	private uploadedFiles: any[] = [];
+	private total: number;
+	private http: Http;
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
 	private onShowReceiver: Subject<any> = new Subject();
@@ -55,7 +55,7 @@ export class CourseRestoreDialog extends BaseComponent {
 	onShow: Observable<any> = this.onShowReceiver.asObservable();
 	onHide: Observable<any> = this.onHideReceiver.asObservable();
 
-	constructor(private socketService: WebSocketService, private workflowService: WorkflowService, private sanitizer: DomSanitizer) {
+	constructor(private socketService: WebSocketService, private workflowService: WorkflowService, private sanitizer: DomSanitizer, private excelService: ExcelService) {
 		super();
 		this.sylUtils = new SyllabusUtils();
 		this.syl = new CourseSyllabus();
@@ -102,6 +102,28 @@ export class CourseRestoreDialog extends BaseComponent {
 
 		this.msgs = [];
 		this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
+	}
+
+	changeListner(event: any) {
+		var file = event.files[0];
+		this.fileName = file.name;
+		this.excelService.importFromJsonFile(file).subscribe(data => {
+			this.records = data;
+		});
+	}
+
+	restoreCourse() {
+		var subscriptions = [];
+		console.log(this.records);
+		var output = JSON.parse(this.records);
+		var course_faq = output.course_faq;
+		var course_material =  output.course_material;
+		var course_syllabus = output.course_syllabus;
+		var course_unit = output.course_unit;
+		console.log('course_faq: ', course_faq);
+		console.log('course_material: ', course_material);
+		console.log('course_syllabus: ', course_syllabus);
+		console.log('course_unit: ', course_unit);
 	}
 }
 

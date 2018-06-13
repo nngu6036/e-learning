@@ -22,13 +22,13 @@ export class ExcelService {
       type: EXCEL_TYPE
     });
     saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-    
+
   }
 
   public importFromExcelFile(file: any): Observable<any> {
-    return Observable.create(function(observer) {
+    return Observable.create(function (observer) {
       var reader = new FileReader();
-      reader.onload = function(e: any) {
+      reader.onload = function (e: any) {
         var data = new Uint8Array(e.target.result);
         data = new Uint8Array(data);
         var workbook = XLSX.read(data, { type: 'array' });
@@ -41,5 +41,18 @@ export class ExcelService {
     });
   }
 
-
+  public importFromJsonFile(file: any): Observable<any> {
+    return Observable.create(function (observer) {
+      var reader = new FileReader();
+      var textType = /application.json/;
+      if (file.type.match(textType)) {
+        reader.onload = function (e) {
+          var data = reader.result;
+          observer.next(data);
+          observer.complete();
+        }
+        reader.readAsText(file);
+      }
+    });
+  }
 }

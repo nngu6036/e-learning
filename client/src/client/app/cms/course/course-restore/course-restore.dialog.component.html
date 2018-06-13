@@ -4,8 +4,9 @@
         <div class="ui-g-12 course-syllabus">
             <p-toolbar>
                 <div class="ui-toolbar-group-left mt5">
-                    <a pButton type="button" [href]="downloadJsonHref" label="{{'Restore'|translate}}" class="green-btn" icon="ui-icon-mode-edit" download="data.json" (click)="backupCourse()"></a>
-                    <p-fileUpload mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>
+                    <a pButton type="button" label="{{'Restore'|translate}}" class="green-btn" icon="ui-icon-mode-edit" (click)="restoreCourse()"></a>
+                    <p-fileUpload mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="changeListner($event)" accept="json" maxFileSize="1024*16"
+                        showUploadButton="false"></p-fileUpload>
                 </div>
             </p-toolbar>
             <div class="ui-g-6">

@@ -163,11 +163,8 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     restoreCourse(course: Course) {
-        console.log('course:', course);
-        this.startTransaction();
-        this.getCourseSyllabus(course).subscribe(syllabus => {
-            this.restoreDialog.show(syllabus);
-            this.closeTransaction();
+        CourseSyllabus.byCourse(this, course.id).subscribe(syl => {
+            this.restoreDialog.show(syl);
         });
     }
 }

@@ -110,7 +110,7 @@ export class CourseBackupDialog extends BaseComponent {
 	backupCourse() {
 		this.getCourseFaq();
 		this.getCourseMaterial();
-		this.output = { "course-faq": this.faqs, "course-material": this.materials, "course-syllabus": this.syl, "course-unit": this.units };
+		this.output = { "course_faq": this.faqs, "course_material": this.materials, "course_syllabus": this.syl, "course_unit": this.units };
 		let dataStr = JSON.stringify(this.output);
 		let data = "text/json;charset=utf-8," + encodeURIComponent(dataStr);
 
