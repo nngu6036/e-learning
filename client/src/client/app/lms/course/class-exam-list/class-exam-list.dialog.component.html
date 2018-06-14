@@ -1,19 +1,23 @@
 <p-dialog header="{{'Class exams'|translate}}" [(visible)]="display" modal="true" width="800" [responsive]="true" appendTo="body">
-  <div class="ui-g">
+    <div class="ui-g">
         <div class="ui-g-12">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addExam()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editExam()" *ngIf="selectedClassExam"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editExam()"
+                        *ngIf="selectedClassExam"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteExam()"
+                        *ngIf="selectedClassExam"></button>
                     <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" *ngIf="selectedClassExam"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
-                    <button pButton type="button" icon="ui-icon-star" title="{{'Manage'| translate}}" *ngIf="selectedClassExam" label="{{'Manage'|translate}}" (click)="manageExam()" class="orange-btn">
+                    <button pButton type="button" icon="ui-icon-star" title="{{'Manage'| translate}}" *ngIf="selectedClassExam" label="{{'Manage'|translate}}"
+                        (click)="manageExam()" class="orange-btn">
                     </button>
                 </div>
             </p-toolbar>
-            <p-table #examTable [value]="classExams" [paginator]="true" [rows]="10" selectionMode="single" 
-            [(selection)]="selectedClassExam" [responsive]="true">
+            <p-table #examTable [value]="classExams" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedClassExam"
+                [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th [pSortableColumn]="'name'">
@@ -46,10 +50,10 @@
             </p-table>
         </div>
     </div>
-<exam-dialog></exam-dialog>
-<class-exam-enroll-dialog></class-exam-enroll-dialog>
-<exam-content-dialog></exam-content-dialog>
-  <p-footer>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
+    <exam-dialog></exam-dialog>
+    <class-exam-enroll-dialog></class-exam-enroll-dialog>
+    <exam-content-dialog></exam-content-dialog>
+    <p-footer>
+        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
 </p-dialog>

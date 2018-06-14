@@ -31,7 +31,7 @@ export class ClassExamListDialog extends BaseComponent {
 
 	@ViewChild(ExamDialog) examDialog: ExamDialog;
 	@ViewChild(ClassExamEnrollDialog) examEnrollDialog: ClassExamEnrollDialog;
-	@ViewChild(ExamContentDialog) examContentDialog:ExamContentDialog;
+	@ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
 
 	constructor(private router: Router) {
 		super();
@@ -58,13 +58,13 @@ export class ClassExamListDialog extends BaseComponent {
 
 	enroll() {
 		if (this.selectedClassExam) {
-			this.examEnrollDialog.show(this.selectedClassExam,this.courseClass);
+			this.examEnrollDialog.show(this.selectedClassExam, this.courseClass);
 		}
 	}
 
 	addExam() {
 		var exam = new Exam();
-		exam.supervisor_id =  this.authService.UserProfile.id;
+		exam.supervisor_id = this.authService.UserProfile.id;
 		this.examDialog.show(exam);
 		this.examDialog.onCreateComplete.subscribe(() => {
 			var classExam = new ClassExam();
@@ -78,25 +78,29 @@ export class ClassExamListDialog extends BaseComponent {
 				member.user_id = this.authService.UserProfile.id;
 				member.date_register = new Date();
 				member.status = 'active';
-				member.save(this).subscribe(()=> {
-					this.loadExams();
-				});
+				// member.save(this).subscribe(() => {
+				// 	this.loadExams();
+				// });
 			});
+			this.loadExams()
 		});
 	}
 
 	editExam() {
 		if (this.selectedClassExam) {
 			Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
-				this.examDialog.show(exam);;
+				this.examDialog.show(exam);
+			});
+			this.examDialog.onUpdateComplete.subscribe(() => {
+				this.loadExams();
 			});
 		}
 	}
 
 	manageExam() {
-		if (this.selectedClassExam)  {
-			ExamMember.byExamAndUser(this, this.authService.UserProfile.id ,this.selectedClassExam.exam_id).subscribe(member=> {
-				this.router.navigate(['/lms/exams/manage',this.selectedClassExam.exam_id, member.id]);
+		if (this.selectedClassExam) {
+			ExamMember.byExamAndUser(this, this.authService.UserProfile.id, this.selectedClassExam.exam_id).subscribe(member => {
+				this.router.navigate(['/lms/exams/manage', this.selectedClassExam.exam_id, member.id]);
 			});
 		}
 	}
@@ -108,5 +112,16 @@ export class ClassExamListDialog extends BaseComponent {
 			});
 		}
 	}
+
+	deleteExam() {
+		if (this.selectedClassExam)
+			this.confirm('Are you sure to delete ?', () => {
+				this.selectedClassExam.delete(this).subscribe(() => {
+					this.loadExams();
+					this.selectedClassExam = null;
+				})
+			});
+	}
+
 
 }
