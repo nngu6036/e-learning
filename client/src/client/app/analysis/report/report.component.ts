@@ -16,7 +16,6 @@ import { REPORT_CATEGORY } from '../../shared/models/constants'
 })
 export class ReportComponent extends BaseComponent implements OnInit {
 
-	private items: SelectItem[];
 	private selectedItem: any;
 	@ViewChild(ReportContainerDirective) container: ReportContainerDirective;
 
@@ -25,19 +24,7 @@ export class ReportComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.items = [];
-		_.each(REPORT_CATEGORY, (val, key)=> {
-			this.items.push({
-                label: '-- '+ this.translateService.instant(val) +' --',
-                value:null
-            });
-            this.items = this.items.concat(_.map(ReportRegister.Instance.lookup(key), (report)=> {
-				return {
-					label: this.translateService.instant(report["title"]),
-					value: report["component"]
-					}
-				}));
-		});
+		this.chooseTypeReport();
 	}
 
 	renderReportComponent(component) {

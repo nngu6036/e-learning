@@ -30,11 +30,11 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 	@Input() adminMode: boolean;
 	@ViewChild(TicketDialog) ticketDialog: TicketDialog;
 
-	constructor(private router:Router, private parent:HomeComponent, 
-		private eventManager: HomeEventManager, private socketService:WebSocketService) {
+	constructor(private router: Router, private parent: HomeComponent,
+		private eventManager: HomeEventManager, private socketService: WebSocketService) {
 		super();
-		this.langs = _.map(LANGS, (val, key)=> {
-			return { label: val, value: key};
+		this.langs = _.map(LANGS, (val, key) => {
+			return { label: val, value: key };
 		});
 		this.selectedLang = this.translateService.currentLang;
 		this.notifs = [];
@@ -45,21 +45,21 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 		this.viewMode = this.settingService.ViewMode;
 		this.loadNotification();
 		this.socketService.join(this.user.id, this.authService.CloudAcc.id);
-		this.socketService.onNotify.subscribe(data=> {
+		this.socketService.onNotify.subscribe(data => {
 			this.loadNotification();
 		});
 	}
 
 	loadNotification() {
-		Notification.listByUser(this, this.user.id).subscribe(notifs=> {
-			this.notifs =  notifs;
+		Notification.listByUser(this, this.user.id).subscribe(notifs => {
+			this.notifs = notifs;
 		});
 	}
 
-	showTicket(notif:Notification) {
-		Ticket.get(this, notif.ticket_id).subscribe(ticket=> {
+	showTicket(notif: Notification) {
+		Ticket.get(this, notif.ticket_id).subscribe(ticket => {
 			this.ticketDialog.show(ticket);
-			notif.delete(this).subscribe(()=> {
+			notif.delete(this).subscribe(() => {
 				this.loadNotification();
 			})
 		});
@@ -68,6 +68,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 	selectLang($event: any) {
 		this.settingService.Lang = $event.value;
 		this.translateService.use($event.value);
+		this.chooseTypeReport();
 	}
 
 	setViewMode(mode) {

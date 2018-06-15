@@ -9,6 +9,10 @@ import { ConfirmationService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingService } from '../../services/setting.service';
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
+import * as _ from 'underscore';
+import { SelectItem } from 'primeng/api';
+import { ReportRegister } from '../../../analysis/report/report.decorator';
+import { REPORT_CATEGORY } from '../../models/constants'
 
 export abstract class BaseComponent implements APIContext {
 	apiService: APIService;
@@ -18,6 +22,7 @@ export abstract class BaseComponent implements APIContext {
 	confirmationService: ConfirmationService;
 	translateService: TranslateService;
 	settingService: SettingService;
+	public items: SelectItem[];
 
 	constructor() {
 		this.apiService = ServiceLocator.injector.get(APIService);
@@ -29,29 +34,45 @@ export abstract class BaseComponent implements APIContext {
 		this.settingService = ServiceLocator.injector.get(SettingService);
 	}
 
-	error(msg:string) {
+	error(msg: string) {
 		this.messageService.add({ severity: 'error', summary: this.translateService.instant('Error'), detail: this.translateService.instant(msg) });
 	}
 
-	info(msg:string) {
+	info(msg: string) {
 		this.messageService.add({ severity: 'info', summary: this.translateService.instant('Info'), detail: this.translateService.instant(msg) });
 	}
 
-	success(msg:string) {
+	success(msg: string) {
 		this.messageService.add({ severity: 'success', summary: this.translateService.instant('Success'), detail: this.translateService.instant(msg) });
 	}
 
-	warn(msg:string) {
+	warn(msg: string) {
 		this.messageService.add({ severity: 'warn', summary: this.translateService.instant('Warn'), detail: this.translateService.instant(msg) });
 	}
 
-	confirm(prompt:string, callback:()=> any) {
+	confirm(prompt: string, callback: () => any) {
 		this.confirmationService.confirm({
-            message: this.translateService.instant(prompt),
-            accept: () => {
-                callback();
-            }
-        });
+			message: this.translateService.instant(prompt),
+			accept: () => {
+				callback();
+			}
+		});
 	}
 
+	chooseTypeReport() {
+		this.items = [];
+		_.each(REPORT_CATEGORY, (val, key) => {
+			console.log(val);
+			this.items.push({
+				label: '--' + this.translateService.instant(val) + '--',
+				value: null
+			});
+			this.items = this.items.concat(_.map(ReportRegister.Instance.lookup(key), (report) => {
+				return {
+					label: this.translateService.instant(report["title"]),
+					value: report["component"]
+				}
+			}));
+		});
+	}
 }
