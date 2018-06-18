@@ -27,6 +27,7 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
 	constructor(private componentFactoryResolver: ComponentFactoryResolver, private changeDetectionRef: ChangeDetectorRef) {
 		super();
 		this.treeUtils = new TreeUtils();
+		this.levels = [];
 	}
 
 	nodeSelect(event: any) {
@@ -38,66 +39,79 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-            BaseModel.bulk_search(this,Group.__api__listCompetencyGroup(), CompetencyLevel.__api__listByCompetency(this.object.id))
-            .subscribe(jsonArr => {
-                var groups = Group.toArray(jsonArr[0]);
-                this.tree = this.treeUtils.buildGroupTree(groups);
-                if (object.group_id) {
-                    this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
-                }
-                this.levels = CompetencyLevel.toArray(jsonArr[1]);
-            });
+			if (object.id)
+				BaseModel.bulk_search(this, Group.__api__listCompetencyGroup(), CompetencyLevel.__api__listByCompetency(object.id))
+					.subscribe(jsonArr => {
+						var groups = Group.toArray(jsonArr[0]);
+						this.tree = this.treeUtils.buildGroupTree(groups);
+						if (object.group_id) {
+							this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
+						}
+						this.levels = CompetencyLevel.toArray(jsonArr[1]);
+					});
+			this.buildCompetencyTree(object);
+
 		});
 	}
 
+	buildCompetencyTree(object) {
+		Group.listCompetencyGroup(this).subscribe(groups => {
+			this.tree = this.treeUtils.buildGroupTree(groups);
+			if (object.group_id) {
+				this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
+			}
+		});
+	}
+
+
 	addCompetencyLevel() {
-        var level = new CompetencyLevel();
-        level.name ='New level';
-        this.levels.push(level);
-    }
+		var level = new CompetencyLevel();
+		level.name = 'New level';
+		this.levels.push(level);
+	}
 
-    updateCompetencyLevel():Observable<any> {
-    	var subscriptions =  _.map(this.levels, (level:CompetencyLevel)=> {
-    		if (!level.name || level.name =='') {
-    			if (level.id)
-    				return level.delete(this);
-    			else
-    				return Observable.of(true);
-    		} else {
-    			level.competency_id = this.object.id;
-    			return level.save(this);
-    		}
-    	});
-    	if (subscriptions.length)
-    		return Observable.forkJoin(...subscriptions);
-    	else
-    		return Observable.of(true);
-    }
+	updateCompetencyLevel(): Observable<any> {
+		var subscriptions = _.map(this.levels, (level: CompetencyLevel) => {
+			if (!level.name || level.name == '') {
+				if (level.id)
+					return level.delete(this);
+				else
+					return Observable.of(true);
+			} else {
+				level.competency_id = this.object.id;
+				return level.save(this);
+			}
+		});
+		if (subscriptions.length)
+			return Observable.forkJoin(...subscriptions);
+		else
+			return Observable.of(true);
+	}
 
-    saveWithLevel() {
-        if (!this.object.id) {
-            this.object.save(this).subscribe(() => {
-            	this.updateCompetencyLevel().subscribe(()=> {
-            		this.onCreateCompleteReceiver.next(this.object);
-	                this.success(this.translateService.instant('Object created successfully.'));
-	                this.hide();
-            	});
-            },()=> {
-                this.error(this.translateService.instant('Permission denied'));
-            });
-        }
-        else {
-            this.object.save(this).subscribe(() => {
-            	this.updateCompetencyLevel().subscribe(()=> {
-            		this.onUpdateCompleteReceiver.next(this.object);
-                	this.success(this.translateService.instant('Object saved successfully.')) ;
-                	this.hide();
-            	});
-            },()=> {
-                this.error(this.translateService.instant('Permission denied'));
-            });
-        }
-    }
+	saveWithLevel() {
+		if (!this.object.id) {
+			this.object.save(this).subscribe(() => {
+				this.updateCompetencyLevel().subscribe(() => {
+					this.onCreateCompleteReceiver.next(this.object);
+					this.success(this.translateService.instant('Object created successfully.'));
+					this.hide();
+				});
+			}, () => {
+				this.error(this.translateService.instant('Permission denied'));
+			});
+		}
+		else {
+			this.object.save(this).subscribe(() => {
+				this.updateCompetencyLevel().subscribe(() => {
+					this.onUpdateCompleteReceiver.next(this.object);
+					this.success(this.translateService.instant('Object saved successfully.'));
+					this.hide();
+				});
+			}, () => {
+				this.error(this.translateService.instant('Permission denied'));
+			});
+		}
+	}
 
 }
 
