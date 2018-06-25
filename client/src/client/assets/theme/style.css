@@ -289,6 +289,11 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
   color: #fff;
 }
 
+.dashboard-courses-list .image-box .card .image-box-footer{
+  padding-bottom: 10px;
+  padding-right: 6px;
+ }
+
 /*body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
   height: 100px;
   overflow: hidden;
@@ -578,4 +583,10 @@ body .ui-progressbar .ui-progressbar-value {
 
 .button-add-ques.ui-splitbutton {
     display: inline;
+}
+
+@media screen and (max-width: 500px) {
+  .tree-unit-course-study{
+    height: 150px;
+    overflow: auto;}
 }
