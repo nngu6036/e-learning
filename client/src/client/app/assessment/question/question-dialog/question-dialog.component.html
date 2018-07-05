@@ -23,7 +23,8 @@
                         <div class="ui-g-6">
                             <label>{{'Level'|translate}}</label>
                             <div class="ui-g-12 ui-md-4">
-                                <p-radioButton name="level" value="easy" label="{{'Easy'|translate}}" [(ngModel)]="object.level" inputId="opt1" #level="ngModel" required></p-radioButton>
+                                <p-radioButton name="level" value="easy" label="{{'Easy'|translate}}" [(ngModel)]="object.level" inputId="opt1" #level="ngModel"
+                                    required></p-radioButton>
                             </div>
                             <div class="ui-g-12 ui-md-4">
                                 <p-radioButton name="level" value="medium" label="{{'Medium'|translate}}" [(ngModel)]="object.level" inputId="opt2" required></p-radioButton>
@@ -43,7 +44,7 @@
         </p-scrollPanel>
     </form>
     <p-footer>
-        <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
+        <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
         <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{'Close'|translate}}"></button>
     </p-footer>
 </p-dialog>

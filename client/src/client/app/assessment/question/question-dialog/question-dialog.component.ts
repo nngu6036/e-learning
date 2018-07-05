@@ -46,13 +46,14 @@ export class QuestionDialog extends BaseDialog<Question>  {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
+			console.log(object);
 			Group.listQuestionGroup(this).subscribe(groups => {
 				this.tree = this.treeUtils.buildGroupTree(groups);
 				if (object.group_id) {
 					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
 				}
 			});
-			object.populateOption(this).subscribe(()=> {
+			object.populateOption(this).subscribe(() => {
 				var detailComponent = QuestionRegister.Instance.lookup(object.type);
 				let viewContainerRef = this.questionHost.viewContainerRef;
 				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
@@ -62,22 +63,6 @@ export class QuestionDialog extends BaseDialog<Question>  {
 				(<IQuestion>this.componentRef.instance).render(object);
 			});
 		});
-		this.onUpdateComplete.subscribe(object => {
-			if (this.componentRef)
-				(<IQuestion>this.componentRef.instance).saveEditor().subscribe(() => {
-					this.success(this.translateService.instant('Question saved.'));
-				});
-		});
-		this.onCreateComplete.subscribe(object => {
-			if (this.componentRef)
-				(<IQuestion>this.componentRef.instance).saveEditor().subscribe(() => {
-					this.success(this.translateService.instant('Question saved.'));
-				});
-		})
-	}
-
-	saveQuestion() {
-		(<IQuestion>this.componentRef.instance).saveEditor();
 	}
 }
 
