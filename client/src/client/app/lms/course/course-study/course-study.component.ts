@@ -139,15 +139,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 						this.logs = logs;
 						this.displayCouseSyllabus();
 						if (this.member.class_id) {
-							this.examMembers =  this.lmsProfileService.examMembersByClassId(this.member.class_id);
-							this.conferenceMember =  this.lmsProfileService.conferenceMemberByClass(this.member.class_id);
+							this.examMembers = this.lmsProfileService.examMembersByClassId(this.member.class_id);
+							this.conferenceMember = this.lmsProfileService.conferenceMemberByClass(this.member.class_id);
 							if (this.conferenceMember)
-								this.conference = this.conferenceMember.conference; 
-							this.projectSubmits =  this.lmsProfileService.projectSubmitsByMember(this.member.id);
-            				this.lmsProfileService.getClassContent(this, this.member.class_id).subscribe(content=> {
-                				this.projects = content["projects"];
-                			});
-            			}
+								this.conference = this.conferenceMember.conference;
+							this.projectSubmits = this.lmsProfileService.projectSubmitsByMember(this.member.id);
+							this.lmsProfileService.getClassContent(this, this.member.class_id).subscribe(content => {
+								this.projects = content["projects"];
+							});
+						}
 					})
 				});
 			});
@@ -307,11 +307,11 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-    getProjectSubmit(project: Project) {
-        return  _.find(this.projectSubmits, (submit: ProjectSubmission) => {
-            return submit.project_id == project.id;
-        }) || new ProjectSubmission();
-    }
+	getProjectSubmit(project: Project) {
+		return _.find(this.projectSubmits, (submit: ProjectSubmission) => {
+			return submit.project_id == project.id;
+		}) || new ProjectSubmission();
+	}
 
 	joinConference() {
 		if (this.conference.id && this.conferenceMember.id && this.conferenceMember.is_active)
@@ -322,6 +322,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 	submitProject(project: Project) {
 		this.projectSubmitDialog.show(project, this.member);
+	}
+
+	startExam(exam: Exam, member: ExamMember) {
+		this.confirmationService.confirm({
+			message: this.translateService.instant('Are you sure to start?'),
+			accept: () => {
+				this.examStudyDialog.show(exam, member);
+			}
+		});
 	}
 
 }
