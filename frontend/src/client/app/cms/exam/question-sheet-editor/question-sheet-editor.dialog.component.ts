@@ -34,18 +34,20 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 	private treeUtils: TreeUtils;
 	private examQuestions: ExamQuestion[];
 	private onSaveReceiver: Subject<any> = new Subject();
-    onSave: Observable<any> = this.onSaveReceiver.asObservable();
+	private totalQuestion: number;
+	onSave: Observable<any> = this.onSaveReceiver.asObservable();
 
 	constructor() {
 		super();
 		this.treeUtils = new TreeUtils();
-		
+
 	}
 
 	ngOnInit() {
 		this.tree = {};
 		this.selectorGroups = {};
 		this.selectedNodes = {};
+		this.totalQuestion = 0;
 		_.each(QUESTION_LEVEL, (val, key) => {
 			this.selectorGroups[key] = {};
 			this.selectorGroups[key]["number"] = 0;
@@ -56,6 +58,16 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 		});
 		Group.listQuestionGroup(this).subscribe(groups => {
 			_.each(QUESTION_LEVEL, (val, key) => {
+				groups.forEach((group: any) => {
+					Question.listByGroup(this, group.id).subscribe(questions => {
+						var questions = questions;
+						var test = [];
+						test = _.filter(questions, (quest: any) => {
+							return quest.level == key;
+						});
+						group.number = test.length;
+					});
+				});
 				this.tree[key] = this.treeUtils.buildGroupTree(groups);
 				this.selectedNodes[key] = _.map(this.selectorGroups[key]["group_ids"], (group_id => {
 					return this.treeUtils.findTreeNode(this.tree[key], group_id);
@@ -68,10 +80,22 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 		this.selectorGroups[level]["group_ids"] = _.map(this.selectedNodes[level], (node => {
 			return node['data']['id'];
 		}));
+		this.selectorGroups[level]["group_ids"].forEach((id: any) => {
+			Question.listByGroup(this, id).subscribe(questions => {
+				var questions = questions;
+				var test = [];
+				test = _.filter(questions, (quest: any) => {
+					return quest.level == level;
+				});
+				this.totalQuestion = this.totalQuestion + test.length;
+				console.log('test', test);
+				console.log(this.totalQuestion);
+			});
+		});
 	}
 
-	createExamQuestionFromQuestionBank(questions: Question[], score)  {
-		return  _.map(questions, (question:Question) => {
+	createExamQuestionFromQuestionBank(questions: Question[], score) {
+		return _.map(questions, (question: Question) => {
 			var examQuestion = new ExamQuestion();
 			examQuestion.question_id = question.id;
 			examQuestion.score = score;
@@ -84,12 +108,12 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 
 	generateQuestion() {
 		var subscriptions = [];
-		_.each(QUESTION_LEVEL, (val, key)=> {
+		_.each(QUESTION_LEVEL, (val, key) => {
 			var groupIds = this.selectorGroups[key]["group_ids"]
 			if (groupIds.length > 0 && this.selectorGroups[key]["number"])
 				subscriptions.push(Question.listByGroups(this, groupIds).do(questions => {
 					questions = _.shuffle(questions);
-					questions = _.filter(questions, (obj:Question)=> {
+					questions = _.filter(questions, (obj: Question) => {
 						return obj.level == key;
 					});
 					var score = this.selectorGroups[key]["score"];
@@ -103,7 +127,6 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 	show() {
 		this.display = true;
 		this.examQuestions = [];
-		
 	}
 
 
@@ -112,12 +135,10 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 	}
 
 	save() {
-		Observable.forkJoin(this.generateQuestion()).subscribe(()=> {
+		Observable.forkJoin(this.generateQuestion()).subscribe(() => {
 			this.hide();
 			this.onSaveReceiver.next(this.examQuestions);
 			this.success(this.translateService.instant('Content saved successfully.'));
 		})
 	}
-
-	
 }
